@@ -7,21 +7,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Build APK with Buildozer Action
+        uses: ArtemSBulgakov/buildozer-action@v1
         with:
-          python-version: '3.11'
+          buildozer_version: stable
+          command: buildozer -v android debug
+          repository_root: .
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip build-essential git python3 zip unzip openjdk-17-jdk lld
-          pip3 install --upgrade pip
-          pip3 install buildozer cython virtualenv
-
-      - name: Build with Buildozer
-        run: yes | buildozer -v android debug
-        
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
