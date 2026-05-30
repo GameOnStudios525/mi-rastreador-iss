@@ -7,9 +7,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Usamos la acción 100% oficial y actualizada de Kivy
-      - name: Build APK with Kivy Buildozer Action
-        uses: kivy/buildozer-action@v1
+      # Usamos el contenedor oficial corregido de ArtemSBulgakov
+      - name: Build APK with Buildozer Action
+        uses: ArtemSBulgakov/buildozer-action@v3
         with:
           command: buildozer -v android debug
           repository_root: .
