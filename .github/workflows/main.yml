@@ -3,15 +3,14 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # Usamos la acción oficial de la comunidad Kivy que ya tiene todo configurado por dentro
-      - name: Build APK with Buildozer Action
-        uses: ArtemSBulgakov/buildozer-action@v1
+      # Usamos la acción 100% oficial y actualizada de Kivy
+      - name: Build APK with Kivy Buildozer Action
+        uses: kivy/buildozer-action@v1
         with:
-          buildozer_version: stable
           command: buildozer -v android debug
           repository_root: .
 
