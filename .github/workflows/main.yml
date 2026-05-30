@@ -3,19 +3,33 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Forzamos una versión de Linux ultra compatible con Android
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build APK with Buildozer Action
-        uses: ArtemSBulgakov/buildozer-action@v1
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          buildozer_version: stable
-          command: buildozer -v android debug
-          repository_root: .
+          python-version: '3.10'
 
-      - name: Upload APK Artifact
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev python3-dev zip unzip openjdk-17-jdk
+
+      - name: Install Python tools
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython==0.29.36 sh
+
+      - name: Build APK
+        run: |
+          yes | buildozer -v android debug
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: MiApp-Android
           path: bin/*.apk
+
