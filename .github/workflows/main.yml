@@ -7,9 +7,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Usamos el contenedor oficial corregido de ArtemSBulgakov
+      # Comando de rescate para saltar el fallo de repositorios caídos de Linux
+      - name: Fix APT Repositories
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo apt-get update
+
+      # Usamos la acción estable certificada v1
       - name: Build APK with Buildozer Action
-        uses: ArtemSBulgakov/buildozer-action@v3
+        uses: ArtemSBulgakov/buildozer-action@v1
         with:
           command: buildozer -v android debug
           repository_root: .
